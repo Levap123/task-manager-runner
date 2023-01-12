@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:14.3
+    environment:
+      POSTGRES_DB: task
+      POSTGRES_USER: pavel
+      POSTGRES_PASSWORD: root
+    networks:
+      - default
+    ports:
+      - 5432:5432
+
+
+  auth-service:
+    build: task-manager-auth-service
+    depends_on: 
+      - db
+    ports:
+      - 5050:5050
+    user: root
+    networks:
+      - default
+      
+  api-gateway:
+    build: task-manager-api-gateway
+    ports:
+      - 8080:8080
+    networks:
+      - default
+    depends_on:
+      - auth-service
+    user: root
+
+
