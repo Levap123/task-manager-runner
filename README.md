@@ -16,6 +16,6 @@ Run
 make build && make run  
 ```
 
-Go to *localhost:8080/swagger/index.html* for seeing swagger documentation
+Go to *http://localhost:8080/swagger/index.html* for seeing swagger documentation
 
 
