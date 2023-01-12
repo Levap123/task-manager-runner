@@ -1,6 +1,10 @@
 
 ## Run Locally
-
+Clone runner and go to it
+```bash
+  git clone https://github.com/Levap123/task-manager-runner
+  cd task-manager-runner
+```
 
 Clone all services
 ```bash
