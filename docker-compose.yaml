@@ -8,20 +8,47 @@ services:
       POSTGRES_PASSWORD: root
     networks:
       - default
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - 5432:5432
 
 
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 27017:27017
+    networks:
+      - default
+
+
+  tasks-service:
+    build: task-manager-tasks-service
+    depends_on:
+      - mongodb
+    ports:
+      - 5151:5151
+    user: root
+    networks:
+      - default
+
   auth-service:
     build: task-manager-auth-service
-    depends_on: 
-      - db
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - 5050:5050
     user: root
     networks:
       - default
-      
+
   api-gateway:
     build: task-manager-api-gateway
     ports:
@@ -30,6 +57,5 @@ services:
       - default
     depends_on:
       - auth-service
+      - tasks-service
     user: root
-
-
